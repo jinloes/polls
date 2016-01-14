@@ -1,7 +1,10 @@
 #!/bin/bash
 set -x
-cd $OPENSHIFT_REPO_DIR
-export GRADLE_USER_HOME=$OPENSHIFT_DATA_DIR/gradle
-export GRADLE_HOME=$OPENSHIFT_DATA_DIR/gradle-2.10
-export PATH=$GRADLE_HOME/bin:$PATH
-gradle build
+if [ ! -d $OPENSHIFT_DATA_DIR/gradle-2.10 ]
+then
+    cd $OPENSHIFT_DATA_DIR
+    mkdir gradle
+    wget http://services.gradle.org/distributions/gradle-2.10-bin.zip
+    unzip gradle-2.10-bin.zip
+    rm -f gradle-2.10-bin.zip
+fi

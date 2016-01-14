@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <title>Polls!</title>
+    <link href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+        display: none !important;
+        }
+    </style>
+</head>
+<body ng-app="polls" ng-cloak class="ng-cloak">
+<div ng-controller="navigation" class="container">
+    <ul class="nav nav-pills" role="tablist">
+        <li ng-class="{active:tab('home')}"><a href="#/">Home</a></li>
+        <li ng-show="!authenticated"><a href="#/polls">Polls</a></li>
+    </ul>
+</div>
+<div ng-view class="container">
+</div>
+<script src="/webjars/angular/1.4.8/angular.min.js" type="text/javascript"></script>
+<script src="/webjars/angular-route/1.4.8/angular-route.min.js" type="text/javascript"></script>
+<script src="js/polls.js"></script>
+</body>
+</html>

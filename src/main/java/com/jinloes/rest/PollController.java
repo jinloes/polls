@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class PollController {
-    @RequestMapping("/")
+    @RequestMapping("/polls")
     public String index() {
         System.out.println("test");
         return "Greetings from Spring Boot!";

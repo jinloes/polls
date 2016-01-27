@@ -28,6 +28,7 @@ dependencies {
     compile('org.webjars.bower:angular:1.4.8')
     compile 'org.webjars.bower:angular-route:1.4.8'
     compile 'org.webjars:bootstrap:3.3.6'
+    compile 'org.webjars.bower:angular-resource:1.4.8'
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     testCompile("junit:junit")

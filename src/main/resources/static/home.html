@@ -1,1 +1,14 @@
 <h1>Welcome to the Polls application!</h1>
+<table st-table="displayPoll" st-safe-src="polls" class="table table-condensed table-bordered table-striped"
+       show-filter="false">
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="poll in polls">
+            <td>{{poll.name}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,4 +1,4 @@
-angular.module('polls', ['ngRoute', 'ngResource', 'polls.services']);
+angular.module('polls', ['ngRoute', 'ngResource', 'smart-table', 'polls.services']);
 angular.module('polls')
     .config(function ($routeProvider) {
         $routeProvider
@@ -11,16 +11,24 @@ angular.module('polls')
             })
             .otherwise('/');
     })
-    .controller('navigation', function($rootScope, $scope, $http, $location, $route) {
-        $scope.tab = function (route) {
-            return $route.current && route === $route.current.controller;
+    .controller('navigation', function($scope, $location) {
+        $scope.isActive = function (viewLocation) {
+            return viewLocation === $location.path();
         };
     })
-    .controller('home', function($scope, $http) {
+    .controller('home', function($scope, $http, $log, Poll) {
+        $scope.displayPoll = []
+        Poll.get().$promise.then(function(data) {
+            $scope.polls = data["_embedded"]["polls"]
+            return data["_embedded"]["polls"]
+        })
     })
-    .controller('CreatePollController', function($scope, $window, Poll) {
+    .controller('CreatePollController', function($scope, $window, $location, Poll) {
         $scope.create = function(poll) {
-            $window.alert(poll.name)
-            Poll.save(poll, function() {})
+            Poll.save(poll, function() {
+                $location.path("/")
+            },
+            function(error) {
+            })
         }
     });

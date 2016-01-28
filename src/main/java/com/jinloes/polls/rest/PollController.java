@@ -1,4 +1,4 @@
-package com.jinloes.rest;
+package com.jinloes.polls.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

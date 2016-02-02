@@ -24,6 +24,10 @@ angular.module('polls')
         })
     })
     .controller('CreatePollController', function($scope, $window, $location, Poll) {
+        $scope.poll = { choices: []}
+        $scope.addPollChoice = function() {
+            $scope.poll.choices.push('');
+        }
         $scope.create = function(poll) {
             Poll.save(poll, function() {
                 $location.path("/")

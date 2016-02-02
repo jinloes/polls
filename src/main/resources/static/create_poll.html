@@ -1,7 +1,30 @@
-Create a poll!
 <div ng-controller="CreatePollController">
     <form novalidate class="simple-form">
-        Name: <input type="text" ng-model="poll.name"/> <br/>
-        <input type="submit" ng-click="create(poll)" value="Create"/>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    Create a poll!
+                </h4>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Name: <input type="text" ng-model="poll.name"/>
+                </li>
+                <li class="list-group-item" ng-repeat="choice in poll.choices track by $index">
+                    Choice {{$index+1}}:
+                    <div style="display:inline">
+                        <input type="text" ng-model="poll.choices[$index].text"
+                               placeholder="Enter a choice"/>
+                    </div>
+                    <div style="display:inline">
+                        <button ng-click="poll.choices.splice($index, 1)">Remove</button>
+                    </div>
+                </li>
+            </ul>
+            <div class="panel-footer">
+                <button ng-click="addPollChoice()">Add Choice</button>
+                <button type="submit" ng-click="create(poll)">Create</button>
+            </div>
+        </div>
     </form>
 </div>

@@ -3,7 +3,7 @@
 # script. The application will work only if it binds to
 # $OPENSHIFT_DIY_IP:8080
 export PATH=/etc/alternatives/java_sdk_1.8.0/bin:$PATH
-export JAVA_HOME="/etc/alternatives/java_sdk_1.8.0"\
+export JAVA_HOME="/etc/alternatives/java_sdk_1.8.0"
 export JDBC_URL=jdbc:postgresql://${OPENSHIFT_POSTGRESQL_DB_HOST}:${OPENSHIFT_POSTGRESQL_DB_PORT}/polls
 export JDBC_USER=${OPENSHIFT_POSTGRESQL_DB_USERNAME}
 export JDBC_PASSWORD=${OPENSHIFT_POSTGRESQL_DB_PASSWORD}

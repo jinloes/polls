@@ -44,9 +44,9 @@ public class Application {
                                      @Value("${spring.datasource.driver-class-name}") String driverClass) {
         return DataSourceBuilder.create()
                 .driverClassName(driverClass)
-                .url(jdbcUrl)
-                .username(username)
-                .password(password)
+                .url("jdbc:postgresql://admindn8dsch:zJV2xVmv_h-s@127.4.67.2:5432")
+/*                .username(username)
+                .password(password)*/
                 .build();
     }
 

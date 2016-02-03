@@ -36,7 +36,7 @@ public class Application {
         return builder.setType(EmbeddedDatabaseType.H2).build();
     }
 
-    @Bean
+    @Bean(name = "dataSource")
     @Profile("production")
     public DataSource prodDataSource(@Value("#{systemProperty['JDBC_URL]}") String jdbcUrl,
                                      @Value("#{systemProperty['JDBC_USER]}") String username,

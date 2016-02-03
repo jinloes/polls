@@ -43,12 +43,10 @@ public class Application {
 
     @Bean(name = "dataSource")
     @Profile("production")
-    public DataSource prodDataSource(@Value("#{systemProperties['JDBC_URL']}") String jdbcUrl,
-                                     @Value("#{systemProperties['JDBC_USER']}") String username,
-                                     @Value("#{systemProperties['JDBC_PASSWORD']}") String password,
+    public DataSource prodDataSource(@Value("#{systemEnvironment['JDBC_URL']}") String jdbcUrl,
+                                     @Value("#{systemEnvironment['JDBC_USER']}") String username,
+                                     @Value("#{systemEnvironment['JDBC_PASSWORD']}") String password,
                                      @Value("${spring.datasource.driverClassName}") String driverClass) {
-        LOGGER.info(System.getenv().toString());
-        LOGGER.info(System.getProperties().toString());
         LOGGER.info("=================jdbc url {}, username {}, password, {}, driverClass {}+++++++++++++++++++++++++++++", jdbcUrl, username, password, driverClass);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClass);

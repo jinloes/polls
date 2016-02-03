@@ -10,5 +10,3 @@ then
     unzip gradle-2.10-bin.zip
     rm -f gradle-2.10-bin.zip
 fi
-
-rm -R $OPENSHIFT_DATA_DIR/jdk1.8.0_65

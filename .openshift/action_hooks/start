@@ -5,4 +5,4 @@
 export PATH=$OPENSHIFT_DATA_DIR/jdk1.8.0_65/bin:$PATH
 export JAVA_HOME="$OPENSHIFT_DATA_DIR/jdk1.8.0_65"
 cd $OPENSHIFT_REPO_DIR
-nohup java -jar build/libs/polls-1.0-SNAPSHOT.jar --spring.profiles.active=production --server.port=${OPENSHIFT_DIY_PORT} --server.address=${OPENSHIFT_DIY_IP} &
+nohup java -jar build/libs/polls-1.0-SNAPSHOT.jar -Dspring.datasource.url=jdbc:postgresql://${OPENSHIFT_POSTGRESQL_DB_HOST}:${OPENSHIFT_POSTGRESQL_DB_PORT}/polls --spring.profiles.active=production --server.port=${OPENSHIFT_DIY_PORT} --server.address=${OPENSHIFT_DIY_IP} &

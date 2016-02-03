@@ -52,7 +52,7 @@ public class Application {
         return factory;
     }
 
-    @Bean
+    @Bean(name = "entityManagerFactory")
     @Profile("production")
     public LocalContainerEntityManagerFactoryBean productionEntityManagerFactory() {
 
@@ -69,10 +69,11 @@ public class Application {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager(
+            LocalContainerEntityManagerFactoryBean entityManagerFactoryBean) {
 
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        txManager.setEntityManagerFactory(entityManagerFactoryBean.getObject());
         return txManager;
     }
 }

@@ -43,7 +43,7 @@ public class Application {
 
     @Bean(name = "dataSource")
     @Profile("production")
-    public DataSource prodDataSource(@Value("#{systemEnvironment['JDBC_URL']}") String jdbcUrl,
+    public DataSource prodDataSource(@Value("${spring.datasource.url}") String jdbcUrl,
                                      @Value("#{systemEnvironment['JDBC_USER']}") String username,
                                      @Value("#{systemEnvironment['JDBC_PASSWORD']}") String password,
                                      @Value("${spring.datasource.driverClassName}") String driverClass) {

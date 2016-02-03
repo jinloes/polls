@@ -47,6 +47,8 @@ public class Application {
                                      @Value("#{systemProperties['JDBC_USER']}") String username,
                                      @Value("#{systemProperties['JDBC_PASSWORD']}") String password,
                                      @Value("${spring.datasource.driverClassName}") String driverClass) {
+        LOGGER.info(System.getenv().toString());
+        LOGGER.info(System.getProperties().toString());
         LOGGER.info("=================jdbc url {}, username {}, password, {}, driverClass {}+++++++++++++++++++++++++++++", jdbcUrl, username, password, driverClass);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClass);

@@ -1,9 +1,10 @@
 package com.jinloes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,6 +19,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.lang.invoke.MethodHandles;
 
 /**
  * Created by jinloes on 1/13/16.
@@ -26,6 +28,8 @@ import javax.sql.DataSource;
 @EnableJpaRepositories
 @EnableTransactionManagement
 public class Application {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -43,6 +47,7 @@ public class Application {
                                      @Value("#{systemProperties['JDBC_USER']}") String username,
                                      @Value("#{systemProperties['JDBC_PASSWORD']}") String password,
                                      @Value("${spring.datasource.driverClassName}") String driverClass) {
+        LOGGER.debug("jdbc url {}, username {}, password, {}, driverClass {}", jdbcUrl, username, password, driverClass);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClass);
         dataSource.setUrl(jdbcUrl);

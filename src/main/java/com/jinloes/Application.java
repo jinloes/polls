@@ -38,9 +38,9 @@ public class Application {
 
     @Bean(name = "dataSource")
     @Profile("production")
-    public DataSource prodDataSource(@Value("#{systemProperty['JDBC_URL]}") String jdbcUrl,
-                                     @Value("#{systemProperty['JDBC_USER]}") String username,
-                                     @Value("#{systemProperty['JDBC_PASSWORD]}") String password,
+    public DataSource prodDataSource(@Value("#{systemProperty['JDBC_URL']}") String jdbcUrl,
+                                     @Value("#{systemProperty['JDBC_USER']}") String username,
+                                     @Value("#{systemProperty['JDBC_PASSWORD']}") String password,
                                      @Value("${spring.datasource.driver-class-name}") String driverClass) {
         return DataSourceBuilder.create()
                 .driverClassName(driverClass)

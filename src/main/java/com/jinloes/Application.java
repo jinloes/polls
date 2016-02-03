@@ -28,14 +28,14 @@ public class Application {
     }
 
     @Bean
-    @Profile("default")
+    @Profile("dev")
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         return builder.setType(EmbeddedDatabaseType.H2).build();
     }
 
     @Bean
-    @Profile("default")
+    @Profile("dev")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -69,7 +69,6 @@ public class Application {
     @Bean
     public PlatformTransactionManager transactionManager(
             LocalContainerEntityManagerFactoryBean entityManagerFactoryBean) {
-
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactoryBean.getObject());
         return txManager;

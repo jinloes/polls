@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -42,12 +43,12 @@ public class Application {
                                      @Value("#{systemProperties['JDBC_USER']}") String username,
                                      @Value("#{systemProperties['JDBC_PASSWORD']}") String password,
                                      @Value("${spring.datasource.driver-class-name}") String driverClass) {
-        return DataSourceBuilder.create()
-                .driverClassName(driverClass)
-                .url(jdbcUrl)
-                .username(username)
-                .password(password)
-                .build();
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClass);
+        dataSource.setUrl(jdbcUrl);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        return dataSource;
     }
 
     @Bean

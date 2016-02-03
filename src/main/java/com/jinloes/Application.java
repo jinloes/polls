@@ -1,7 +1,9 @@
 package com.jinloes;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -35,6 +37,20 @@ public class Application {
     }
 
     @Bean
+    @Profile("production")
+    public DataSource prodDataSource(@Value("#{systemProperty['JDBC_URL]}") String jdbcUrl,
+                                     @Value("#{systemProperty['JDBC_USER]}") String username,
+                                     @Value("#{systemProperty['JDBC_PASSWORD]}") String password,
+                                     @Value("${spring.datasource.driver-class-name}") String driverClass) {
+        return DataSourceBuilder.create()
+                .driverClassName(driverClass)
+                .url(jdbcUrl)
+                .username(username)
+                .password(password)
+                .build();
+    }
+
+    @Bean
     @Profile("dev")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
@@ -50,9 +66,9 @@ public class Application {
         return factory;
     }
 
-    @Bean(name = "entityManagerFactory")
+    @Bean
     @Profile("production")
-    public LocalContainerEntityManagerFactoryBean productionEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.POSTGRESQL);
@@ -61,7 +77,7 @@ public class Application {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan(getClass().getPackage().getName());
-        factory.setDataSource(dataSource());
+        factory.setDataSource(dataSource);
 
         return factory;
     }

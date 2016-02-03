@@ -42,7 +42,7 @@ public class Application {
     public DataSource prodDataSource(@Value("#{systemProperties['JDBC_URL']}") String jdbcUrl,
                                      @Value("#{systemProperties['JDBC_USER']}") String username,
                                      @Value("#{systemProperties['JDBC_PASSWORD']}") String password,
-                                     @Value("${spring.datasource.driver-class-name}") String driverClass) {
+                                     @Value("${spring.datasource.driverClassName}") String driverClass) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClass);
         dataSource.setUrl(jdbcUrl);

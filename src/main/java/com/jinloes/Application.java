@@ -41,21 +41,6 @@ public class Application {
         return builder.setType(EmbeddedDatabaseType.H2).build();
     }
 
-    @Bean(name = "dataSource")
-    @Profile("production")
-    public DataSource prodDataSource(@Value("${spring.datasource.url}") String jdbcUrl,
-                                     @Value("#{systemEnvironment['JDBC_USER']}") String username,
-                                     @Value("#{systemEnvironment['JDBC_PASSWORD']}") String password,
-                                     @Value("${spring.datasource.driverClassName}") String driverClass) {
-        LOGGER.info("=================jdbc url {}, username {}, password, {}, driverClass {}+++++++++++++++++++++++++++++", jdbcUrl, username, password, driverClass);
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClass);
-        dataSource.setUrl(jdbcUrl);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        return dataSource;
-    }
-
     @Bean
     @Profile("dev")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

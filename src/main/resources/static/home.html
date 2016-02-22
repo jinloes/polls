@@ -1,14 +1,45 @@
 <h1>Welcome to the Polls application!</h1>
-<table st-table="displayPoll" st-safe-src="polls" class="table table-condensed table-bordered
-    table-striped" show-filter="false">
-    <thead>
-        <tr>
-            <th>Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="poll in polls">
-            <td>{{poll.name}}</td>
-        </tr>
-    </tbody>
-</table>
+<div id="viewWrapper" class="row">
+    <div id="listView" class="col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">Your Polls</h1>
+            </div>
+            <div ng-show="polls.length == 0" class="panel-body">
+                <p>No polls created please create one. :)</p>
+            </div>
+            <table ng-show="polls.length > 0" st-table="displayPoll" st-safe-src="polls" class="table table-condensed
+                table-bordered table-striped" show-filter="false">
+                <thead>
+                    <tr>
+                        <th>Name</th><th># of Choices</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="poll in polls">
+                        <td><a ng-click="viewPoll(poll)">{{poll.name}}</a></td>
+                        <td>{{poll.choices.length}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-1">
+    </div>
+    <div ng-show="currentPoll" id="detailView" class="col-xs-7">
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{currentPoll.name}}</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">Choices</div>
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="choice in currentPoll.choices">{{choice.text}}</li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

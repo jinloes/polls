@@ -9,6 +9,9 @@ angular.module('polls')
             .when('/create_poll', {
                 templateUrl: 'create_poll.html'
             })
+            .when('/polls/:id', {
+                templateUrl: "poll.html"
+            })
             .otherwise('/');
     })
     .controller('navigation', function($scope, $location) {
@@ -16,12 +19,14 @@ angular.module('polls')
             return viewLocation === $location.path();
         };
     })
-    .controller('home', function($scope, $http, $log, Poll) {
+    .controller('home', function($scope, $http, $log, $location, Poll) {
         $scope.displayPoll = []
-        Poll.get().$promise.then(function(data) {
-            $scope.polls = data["_embedded"]["polls"]
-            return data["_embedded"]["polls"]
+        $scope.polls = Poll.get(function(data) {
+            $scope.polls = data;
         })
+        $scope.viewPoll = function(poll) {
+            $scope.currentPoll = poll
+        }
     })
     .controller('CreatePollController', function($scope, $window, $location, Poll) {
         $scope.poll = { choices: []}

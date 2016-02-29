@@ -35,6 +35,9 @@ dependencies {
     compile 'org.webjars.bower:angular-resource:1.4.8'
     compile 'org.webjars.bower:angular-smart-table:2.1.6'
     compile 'org.postgresql:postgresql:9.4.1207'
+    compile 'org.webjars:angular-bootstrap-datetimepicker:0.3.8'
+    compile 'org.webjars:jquery:2.2.1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.2'
     testCompile("junit:junit")
     runtime 'com.h2database:h2:1.4.191'
 }

@@ -1,4 +1,4 @@
-angular.module('polls', ['ngRoute', 'ngResource', 'smart-table', 'polls.services']);
+angular.module('polls', ['ngRoute', 'ngResource', 'smart-table', 'polls.services', 'ui.bootstrap.datetimepicker']);
 angular.module('polls')
     .config(function ($routeProvider) {
         $routeProvider

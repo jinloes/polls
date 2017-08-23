@@ -1,83 +1,62 @@
 package com.jinloes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-import javax.sql.DataSource;
 import java.lang.invoke.MethodHandles;
 
 /**
- * Created by jinloes on 1/13/16.
+ * Application entry point.
  */
-@SpringBootApplication
-@EnableJpaRepositories
-@EnableTransactionManagement
-public class Application {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+@SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@EnableReactiveMongoRepositories
+@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
+public class Application extends AbstractReactiveMongoConfiguration {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+	@Autowired
+	private Environment environment;
 
-    @Bean
-    @Profile("dev")
-    public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.H2).build();
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
 
-    @Bean
-    @Profile("dev")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+	@Override
+	@Bean
+	@DependsOn("embeddedMongoServer")
+	public MongoClient mongoClient() {
+		int port = environment.getProperty("local.mongo.port", Integer.class);
+		return MongoClients.create(String.format("mongodb://localhost:%d", port));
+	}
 
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setDatabase(Database.H2);
-        vendorAdapter.setGenerateDdl(true);
+	@Override
+	protected String getDatabaseName() {
+		return "test";
+	}
 
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan(getClass().getPackage().getName());
-        factory.setDataSource(dataSource());
-
-        return factory;
-    }
-
-    @Bean
-    @Profile("production")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setDatabase(Database.POSTGRESQL);
-        vendorAdapter.setGenerateDdl(true);
-
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan(getClass().getPackage().getName());
-        factory.setDataSource(dataSource);
-
-        return factory;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(
-            LocalContainerEntityManagerFactoryBean entityManagerFactoryBean) {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactoryBean.getObject());
-        return txManager;
-    }
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper()
+				.registerModule(new JavaTimeModule())
+				.registerModule(new Jdk8Module())
+				.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+	}
 }

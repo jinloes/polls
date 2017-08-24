@@ -50,6 +50,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb-reactive', version: '2.0.0.M3'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
     compile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.0.0'
     compile('org.webjars.bower:angular:1.4.8')

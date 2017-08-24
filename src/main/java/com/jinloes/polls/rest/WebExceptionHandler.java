@@ -1,5 +1,6 @@
 package com.jinloes.polls.rest;
 
+import com.jinloes.polls.NotFoundException;
 import com.jinloes.polls.model.ApiError;
 import com.jinloes.polls.model.ApiSubError;
 import com.jinloes.polls.model.ApiValidationError;
@@ -37,5 +38,15 @@ public class WebExceptionHandler {
 				.object(error.getObjectName())
 				.rejectedValue(error.getRejectedValue())
 				.build();
+	}
+
+	@ExceptionHandler(NotFoundException.class)
+	public Mono<ResponseEntity<ApiError>> handleException(NotFoundException e) {
+		return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ApiError.builder()
+						.status(HttpStatus.NOT_FOUND)
+						.message("A requested resource was not found.")
+						.debugMessage(e.getLocalizedMessage())
+						.build()));
 	}
 }

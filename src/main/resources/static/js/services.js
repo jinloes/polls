@@ -1,5 +1,5 @@
 angular.module('polls.services', [])
-    .constant("ENDPOINT_HOST", "http://localhost:8080/api/v1")
+    .constant("ENDPOINT_HOST", "http://localhost:8080")
     .service('Poll', function($resource, ENDPOINT_HOST) {
         var currentPolls = [];
         var resource = $resource(ENDPOINT_HOST + "/polls")

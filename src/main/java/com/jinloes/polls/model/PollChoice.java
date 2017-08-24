@@ -21,7 +21,7 @@ public class PollChoice extends AbstractEntity<UUID> {
 	}
 
 	public PollChoice(UUID id, String text) {
-		super(id);
+		super(id, null, null);
 		this.text = text;
 	}
 

@@ -2,6 +2,8 @@ package com.jinloes.polls;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
 
 import com.jinloes.polls.model.Poll;
 import com.jinloes.polls.repository.PollRepository;
@@ -111,6 +113,7 @@ public class PollControllerTest {
 				.log().everything(true)
 				.assertThat()
 				.statusCode(200)
-				.body("_embedded.polls[0].name", is("my poll"));
+				.body("_embedded.polls[0].name", is("my poll"))
+				.body("_embedded.polls[0].id", not(isEmptyOrNullString()));
 	}
 }

@@ -1,5 +1,6 @@
 package com.jinloes.polls;
 
+import com.jinloes.polls.data.model.QueryResult;
 import com.jinloes.polls.model.Poll;
 import com.jinloes.polls.repository.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -33,11 +33,18 @@ public class PollService {
 		return pollRepository.findById(id);
 	}
 
-	public Flux<Poll> get(Pageable pageable) {
+	public Mono<QueryResult<Poll>> get(Pageable pageable) {
 		Query query = new Query()
 				.with(pageable)
 				.skip(pageable.getOffset())
 				.limit(pageable.getPageSize());
-		return template.find(query, Poll.class);
+		QueryResult.QueryResultBuilder<Poll> builder = QueryResult.<Poll>builder()
+				.page(pageable.getPageNumber())
+				.size(pageable.getPageSize());
+		return Mono.when(template.find(query, Poll.class).collectList(),
+				template.count(query, Poll.class),
+				(polls, totalCount) -> builder.results(polls)
+						.totalCount(totalCount)
+						.build());
 	}
 }

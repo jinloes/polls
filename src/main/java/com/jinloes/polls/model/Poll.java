@@ -14,7 +14,6 @@ import java.util.List;
  * Created by jinloes on 1/28/16.
  */
 @Data
-@Relation(collectionRelation = "polls")
 public class Poll extends AbstractEntity<String> {
 	@NotEmpty
 	private final String name;

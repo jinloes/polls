@@ -12,13 +12,18 @@
                 table-bordered table-striped" show-filter="false">
                 <thead>
                     <tr>
-                        <th>Name</th><th># of Choices</th>
+                        <th>Name</th>
+                        <th>Choices</th>
+                        <th>Created</th>
+                        <th>Updated</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="poll in polls">
                         <td><a ng-click="viewPoll(poll)">{{poll.name}}</a></td>
                         <td>{{poll.choices.length}}</td>
+                        <td>{{poll.created | date:'medium'}}</td>
+                        <td>{{poll.updated | date:'medium'}}</td>
                     </tr>
                 </tbody>
             </table>

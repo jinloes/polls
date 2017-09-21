@@ -1,6 +1,5 @@
 package com.jinloes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -13,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -53,10 +53,9 @@ public class Application extends AbstractReactiveMongoConfiguration {
 	}
 
 	@Bean
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper()
-				.registerModule(new JavaTimeModule())
-				.registerModule(new Jdk8Module())
-				.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+	public Jackson2ObjectMapperBuilderCustomizer customizer() {
+		return jacksonObjectMapperBuilder ->
+				jacksonObjectMapperBuilder.modules(new JavaTimeModule(), new Jdk8Module())
+						.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	}
 }

@@ -26,8 +26,10 @@
                         </ul>
                     </div>
                 </li>
+                <figure>
+                    <figcaption>Choices</figcaption>
                 <li class="list-group-item" ng-repeat="choice in poll.choices track by $index">
-                    Choice {{$index+1}}:
+                    {{$index+1}}:
                     <div style="display:inline">
                         <input type="text" ng-model="poll.choices[$index].text"
                                placeholder="Enter a choice"/>
@@ -36,6 +38,7 @@
                         <button ng-click="poll.choices.splice($index, 1)">Remove</button>
                     </div>
                 </li>
+                </figure>
             </ul>
             <div class="panel-footer">
                 <button ng-click="addPollChoice()">Add Choice</button>

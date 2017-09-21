@@ -26,12 +26,13 @@ public class PollResource extends ResourceSupport {
 	private final String name;
 	private final Instant startDate;
 	private final Instant endDate;
-
 	private final List<PollChoice> choices;
+	private final Instant created;
+	private final Instant updated;
 
 	@JsonCreator
 	public PollResource(@JsonProperty("name") String name, @JsonProperty("start_date") Instant startDate,
 			@JsonProperty("end_date") Instant endDate, @JsonProperty("choices") List<PollChoice> choices) {
-		this(null, name, startDate, endDate, choices);
+		this(null, name, startDate, endDate, choices, null, null);
 	}
 }

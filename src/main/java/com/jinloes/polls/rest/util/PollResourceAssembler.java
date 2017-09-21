@@ -15,6 +15,8 @@ public class PollResourceAssembler implements ResourceAssembler<Poll, PollResour
 				.endDate(entity.getEndDate())
 				.name(entity.getName())
 				.choices(entity.getChoices())
+				.created(entity.getCreatedAt())
+				.updated(entity.getUpdatedAt())
 				.build();
 	}
 }
